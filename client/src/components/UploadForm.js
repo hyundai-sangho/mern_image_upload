@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const UploadForm = () => {
 	const [file, setFile] = useState(null);
@@ -25,13 +26,18 @@ const UploadForm = () => {
 				method: 'POST',
 				body: formData,
 			});
+
 			if (!response.ok) {
 				throw new Error('파일 업로드 실패');
 			}
+
 			const data = await response.json();
-			alert(`파일 업로드 성공: ${data.filename}`);
+			console.log(data);
+			toast.success(`파일 업로드 성공: ${data.filename}`);
+			setFile(null); // 파일 상태 초기화
+			setFileName('이미지 파일을 업로드 해주세요.'); // 파일 이름 초기화
 		} catch (error) {
-			alert(`오류 발생: ${error.message}`);
+			toast.error(`오류 발생: ${error.message}`);
 		}
 	};
 
